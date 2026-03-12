@@ -273,14 +273,16 @@
   animation-timeline: scroll(root);
 }
 
-html {
-  font:
-    100% / 1.1667 Georgia,
-    serif;
-}
-
 body {
   /* variables */
+
+  /* sizings */
+  --title-height: 8vw;
+  --padding-bottom: 0.5rem;
+  --text-padding-bottom: 10vw;
+  --text-space: 5vw;
+  --text-ch-spacing: calc(var(--padding) + (1.4ch * var(--count, 0)));
+  --lgMin: 1024px;
 
   /* easings */
   --ease-OutQuint: cubic-bezier(0.22, 1, 0.36, 1);
@@ -289,34 +291,88 @@ body {
   /* grid / spacing related */
   --gap: 0.5rem;
   --padding: 1.5rem;
-  --columns: 12;
+  --columns: 4;
+  --column-width: calc(
+    (100vw - (var(--padding) * 2) - (var(--gap) * (var(--columns) - 1))) /
+      var(--columns)
+  );
 
-  transition: --scroll-position-delayed 0.15s linear;
+  /* TEXT */
+  --spread: -0.02em;
+
+  /* COLORS */
+
+  --bg-rgb: rgb(149, 194, 202);
+
+  /* if this ever receives support... */
+  @supports (color: rgb(random(--test, 0, 255), 0, 0)) {
+    --bg-rgb: rgb(
+      random(--bg-r, 200, 255),
+      random(--bg-g, 170, 240),
+      random(--bg-b, 160, 225)
+    );
+  }
+  --bg-oklch: oklch(
+    calc(88.167% - (0.1 * var(--velocity-abs)))
+      calc(0.15844 + (0.15 * var(--velocity-abs)))
+      calc(144.116 + (80 * var(--velocity-abs)))
+  );
+  --bg-from: oklch(
+    from var(--bg-rgb) calc(l - (0.1 * var(--velocity-abs)))
+      calc(c + (0.15 * var(--velocity-abs)))
+      calc(h + (-80 * var(--velocity-abs)))
+  );
+
+  background-color: var(--bg-rgb);
+  background-color: var(--bg-oklch);
+  background-color: var(--bg-from);
+
+  transition: --scroll-position-delayed 0.2s linear;
   --scroll-velocity: calc(
     var(--scroll-position) - var(--scroll-position-delayed)
+  );
+  --velocity-abs: max(
+    var(--scroll-velocity),
+    calc(var(--scroll-velocity) * -1)
   );
   anchor-name: --mouse-follow;
 
   display: grid;
   gap: var(--gap);
-  grid-template-columns: calc(var(--padding) - var(--gap)) repeat(var(--columns), 1fr) calc(var(--padding) - var(--gap));
+  grid-template-columns:
+    calc(var(--padding) - var(--gap)) repeat(var(--columns), 1fr)
+    calc(var(--padding) - var(--gap));
+
+  background: var(--bg-oklch, var(--bg-rgb));
+  @supports (background: oklch(from red l c h)) {
+    background: var(--bg-from);
+  }
+  font-size: 20px;
+
+  @media (min-width: var(--lgMin)) {
+    --columns: 12;
+  }
 }
-body:hover::after{
-	opacity: 1;
+body:hover::after {
+  opacity: 1;
 }
 body > * {
-	grid-column: 2 / -2;
+  grid-column: 2 / -2;
+  @media (min-width: var(--lgMin)) {
+    grid-column: 2 / -3;
+  }
 }
 
-body::before {
-  clip-path: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 1000"><path d="M60 0 C10 120 110 240 60 360 S10 600 60 720 S110 840 60 960" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/></svg>');
-
-  right: 0;
-  top: 0;
+/* body::before {
+  content: "";
   position: fixed;
-  height: 100vh;
-  width: 6em;
-}
+  top: 0vh;
+  left: 0;
+  height: 200vh;
+  width: calc(var(--padding) - var(--gap));
+  background: rgb(19, 13, 105);
+  mix-blend-mode: multiply;
+} */
 
 /* cool idea */
 /* body::after {
@@ -347,15 +403,181 @@ body > * > *:is(:hover, :focus-visible){
   transition: color 300ms;
 } */
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+abbr,
+p,
+summary {
+  mix-blend-mode: difference;
+  color: white;
+  isolation: isolate;
+}
+
+a {
+  color: chartreuse;
+  mix-blend-mode: difference;
+}
+
 header {
+  height: 100%;
+  container-name: header;
+  container-type: scroll-state;
+
+  
 }
 
 h1 {
-  font-size: 8vw;
-  animation: text_improvement 0.75s var(--ease-OutQuint) both;
-  animation-delay: 0.15s;
-  font-family: Redaction\100;
+  --improvement-duration: 0.75s;
+  --improvement-delay: 0.15s;
+  --improvement-total: calc(
+    var(--improvement-duration) + var(--improvement-delay)
+  );
+
+  min-height: 400px;
+  font-size: clamp(26px, var(--title-height), var(--title-height));
+  animation: text_improvement var(--improvement-duration)
+    var(--improvement-delay) var(--ease-OutQuint) forwards;
+  font-family: Redaction;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: var(--spread);
   text-transform: uppercase;
+  transition: font-weight 2s ease;
+  transition-delay: 5s;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  span {
+    --span-duration: 5s;
+    --span-delay: var(--improvement-total);
+    --span-animation: var(--span-duration) var(--span-delay)
+      var(--ease-OutQuint) infinite;
+    &:nth-child(3) {
+      position: relative;
+      animation: cycle-original var(--span-animation);
+
+      &::before {
+        content: "we";
+        position: absolute;
+        left: 0%;
+        top: 50%;
+        transform: translate(0%, -50%);
+        animation: cycle-second var(--span-animation);
+        color: transparent;
+      }
+
+      &::after {
+        content: "i";
+        position: absolute;
+        left: 0;
+        top: 50%;
+        animation: cycle-third var(--span-animation);
+        transform: translate(0%, -50%);
+        color: transparent;
+      }
+    }
+
+    &:nth-child(4) {
+      animation: adjust-to-cycle var(--span-animation);
+      display: inline-block;
+    }
+  }
+
+  &::after {
+    content: "Color in motion";
+    position: sticky;
+    display: inline-block;
+    top: 0.5rem;
+    font-size: var(--text-space);
+    font-family: Besley;
+    font-style: normal;
+    text-transform: lowercase;
+    font-weight: 100;
+  }
+}
+
+
+/* CYCLE anim */
+@keyframes cycle-original {
+  0%,
+  18% {
+    color: white;
+    user-select: auto;
+  }
+  19%,
+  71% {
+    user-select: none;
+    color: transparent;
+  }
+  72%,
+  100% {
+    user-select: auto;
+    color: white;
+  }
+}
+
+@keyframes cycle-second {
+  0%,
+  18% {
+    color: transparent;
+  }
+  19%,
+  42% {
+    color: white;
+  }
+  43%,
+  71% {
+    color: transparent;
+  }
+  72%,
+  100% {
+    color: transparent;
+  }
+}
+
+@keyframes cycle-third {
+  0%,
+  18% {
+    color: transparent;
+  }
+  19%,
+  42% {
+    color: transparent;
+  }
+  43%,
+  71% {
+    color: white;
+  }
+  72%,
+  100% {
+    color: transparent;
+  }
+}
+
+@keyframes adjust-to-cycle {
+  0%,
+  18% {
+    transform: translateX(0%);
+  }
+  19%,
+  42% {
+    transform: translateX(-0.9ch);
+  }
+  43%,
+  71% {
+    /* hacky fix for positioning */
+    transform: translateX(calc(-0.44 * var(--title-height) * 4));
+  }
+  72%,
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 /* h1::after {
@@ -404,8 +626,17 @@ span {
   font-family: inherit;
 }
 
-a:link {
-  color: blue; /* How they're supposed to be. */
+#sessions li a {
+  font-size: clamp(1rem, 3vw, 2rem);
+  position: sticky;
+  display: inline-block;
+  color: white;
+  border: 2px solid chartreuse;
+  line-height: 1;
+  padding: 0.25em 0.5em;
+  margin-bottom: 2rem;
+  top: 2rem;
+  mix-blend-mode: difference;
 }
 
 #sessions li + li {
@@ -414,19 +645,19 @@ a:link {
 
 #sessions li img {
   display: block;
-  max-width: 100%; /* Don't break things */
+  max-width: 100%;
   height: auto;
-  width: 20em; /* Lets keep it reasonable */
+  width: 20em;
 }
 
 details::details-content,
 details {
-  content-visibility: visible; /* We couldn't have nice things back then... */
+  content-visibility: visible;
 }
 
 summary {
-  list-style: none; /* No need for fancy interactivity. */
-  font-weight: bold; /* We need to give the people _something_  */
+  list-style: none;
+  font-weight: bold;
 }
 
 @keyframes adjust_position {
@@ -437,28 +668,25 @@ summary {
 }
 
 @keyframes text_improvement {
-  0%,
-  20% {
-    /* Initial state (holds until 15%) */
+  0% {
     font-family: Redaction\100;
   }
-  25% {
-    /* 100% - 15% = 85% / 5 steps ≈ 17% per step */
+  16% {
     font-family: Redaction\70;
   }
-  42% {
+  32% {
     font-family: Redaction\50;
   }
-  59% {
+  48% {
     font-family: Redaction\35;
   }
-  76% {
+  64% {
     font-family: Redaction\20;
   }
-
-  93%,
+  80% {
+    font-family: Redaction\10;
+  }
   100% {
-    /* Final state (holds after 93%) */
     font-family: Redaction;
   }
 }
@@ -473,4 +701,14 @@ summary {
   100% {
     scale: 1;
   }
+}
+
+::selection {
+  color: black;
+  background: var(--bg-from);
+}
+
+a::selection {
+  color: chartreuse;
+  background: var(--bg-from);
 }
