@@ -1,0 +1,476 @@
+@property --scroll-position {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@property --scroll-position-delayed {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@font-face {
+  font-family: "Redaction";
+  src: url("/fonts/redaction/Redaction-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redaction";
+  src: url("./../fonts/redaction/Redaction-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redaction";
+  src: url("./../fonts/redaction/Redaction-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Redaction\10;
+  src: url("./../fonts/redaction/Redaction_10-Regular.woff2") format("woff2");
+  font-weight: 10;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Redaction\10;
+  src: url("./../fonts/redaction/Redaction_10-Regular.2f53ef3f.woff2")
+    format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Redaction\10;
+  src: url("./../fonts/redaction/Redaction_10-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Redaction\10;
+  src: url("./../fonts/redaction/Redaction_10-Italic.woff2") format("woff2");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Redaction\20;
+  src: url("./../fonts/redaction/Redaction_20-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Redaction\20;
+  src: url("./../fonts/redaction/Redaction_20-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Redaction\20;
+  src: url("./../fonts/redaction/Redaction_20-Italic.woff2") format("woff2");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Redaction\35;
+  src: url("./../fonts/redaction/Redaction_35-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Redaction\35;
+  src: url("./../fonts/redaction/Redaction_35-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Redaction\35;
+  src: url("./../fonts/redaction/Redaction_35-Italic.woff2") format("woff2");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Redaction\50;
+  src: url("./../fonts/redaction/Redaction_50-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Redaction\50;
+  src: url("./../fonts/redaction/Redaction_50-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Redaction\50;
+  src: url("./../fonts/redaction/Redaction_50-Italic.woff2") format("woff2");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Redaction\70;
+  src: url("./../fonts/redaction/Redaction_70-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Redaction\70;
+  src: url("./../fonts/redaction/Redaction_70-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Redaction\70;
+  src: url("./../fonts/redaction/Redaction_70-Italic.woff2") format("woff2");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Redaction\100;
+  src: url("./../fonts/redaction/Redaction_100-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Redaction\100;
+  src: url("./../fonts/redaction/Redaction_100-Bold.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: Redaction\100;
+  src: url("./../fonts/redaction/Redaction_100-Italic.woff2") format("woff2");
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Besley;
+  src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-SemiBoldItalic.ttf") format("truetype");
+  font-weight: 600;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-ExtraBoldItalic.ttf") format("truetype");
+  font-weight: 800;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-BlackItalic.ttf") format("truetype");
+  font-weight: 900;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-Thin.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Besley";
+  src: url("./../fonts/besley/Besley-ThinItalic.ttf") format("truetype");
+  font-weight: 100;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: Besley;
+  src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
+  font-weight: 400;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: Besley, "Times New Roman", serif;
+}
+
+:root {
+  animation: adjust_position linear both;
+  animation-timeline: scroll(root);
+}
+
+html {
+  font:
+    100% / 1.1667 Georgia,
+    serif;
+}
+
+body {
+  /* variables */
+
+  /* easings */
+  --ease-OutQuint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-Quad: cubic-bezier(0.44, 0, 0.56, 1);
+
+  /* grid / spacing related */
+  --gap: 0.5rem;
+  --padding: 1.5rem;
+  --columns: 12;
+
+  transition: --scroll-position-delayed 0.15s linear;
+  --scroll-velocity: calc(
+    var(--scroll-position) - var(--scroll-position-delayed)
+  );
+  anchor-name: --mouse-follow;
+
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: calc(var(--padding) - var(--gap)) repeat(var(--columns), 1fr) calc(var(--padding) - var(--gap));
+}
+body:hover::after{
+	opacity: 1;
+}
+body > * {
+	grid-column: 2 / -2;
+}
+
+body::before {
+  clip-path: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 1000"><path d="M60 0 C10 120 110 240 60 360 S10 600 60 720 S110 840 60 960" stroke="white" stroke-width="6" fill="none" stroke-linecap="round"/></svg>');
+
+  right: 0;
+  top: 0;
+  position: fixed;
+  height: 100vh;
+  width: 6em;
+}
+
+/* cool idea */
+/* body::after {
+  content: "";
+  position: absolute;
+  position-anchor: --mouse-follow;
+  left: anchor(left);
+  right: anchor(right);
+  top: anchor(top);
+  bottom: anchor(bottom);
+  border-block-start: 3px solid red;
+  border-block-end: 3px solid red;
+
+  background: black;
+
+  position: absolute;
+
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition:
+    inset 300ms,
+    opacity 0ms;
+}
+body > * > *:is(:hover, :focus-visible){
+  anchor-name: --mouse-follow;
+  color: white;
+  transition: color 300ms;
+} */
+
+header {
+}
+
+h1 {
+  font-size: 8vw;
+  animation: text_improvement 0.75s var(--ease-OutQuint) both;
+  animation-delay: 0.15s;
+  font-family: Redaction\100;
+  text-transform: uppercase;
+}
+
+/* h1::after {
+  content: "";
+  border-block-start: 3px solid red;
+  border-block-end: 3px solid red;
+
+
+  background: 
+    red;
+
+  position: absolute;
+  position-anchor: --pageTitle;
+
+  left: anchor(left);
+  right: anchor(right);
+  top: anchor(top);
+  bottom: anchor(bottom);
+
+  pointer-events: none;
+  z-index: -1;
+
+  opacity: 0;
+  transition: inset 300ms, opacity 700ms;
+} */
+
+/* h1 span:is(:hover, :focus-visible) {
+  anchor-name: --pageTitle;
+} */
+
+abbr,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: Redaction\100;
+  @supports (animation-timeline: view()) {
+    animation: text_improvement 0.75s var(--ease-OutQuint) both;
+    animation-timeline: view();
+    animation-range: entry 25% exit 75%;
+  }
+}
+
+span {
+  font-family: inherit;
+}
+
+a:link {
+  color: blue; /* How they're supposed to be. */
+}
+
+#sessions li + li {
+  margin-block-start: 1em;
+}
+
+#sessions li img {
+  display: block;
+  max-width: 100%; /* Don't break things */
+  height: auto;
+  width: 20em; /* Lets keep it reasonable */
+}
+
+details::details-content,
+details {
+  content-visibility: visible; /* We couldn't have nice things back then... */
+}
+
+summary {
+  list-style: none; /* No need for fancy interactivity. */
+  font-weight: bold; /* We need to give the people _something_  */
+}
+
+@keyframes adjust_position {
+  to {
+    --scroll-position: 1;
+    --scroll-position-delayed: 1;
+  }
+}
+
+@keyframes text_improvement {
+  0%,
+  20% {
+    /* Initial state (holds until 15%) */
+    font-family: Redaction\100;
+  }
+  25% {
+    /* 100% - 15% = 85% / 5 steps ≈ 17% per step */
+    font-family: Redaction\70;
+  }
+  42% {
+    font-family: Redaction\50;
+  }
+  59% {
+    font-family: Redaction\35;
+  }
+  76% {
+    font-family: Redaction\20;
+  }
+
+  93%,
+  100% {
+    /* Final state (holds after 93%) */
+    font-family: Redaction;
+  }
+}
+
+@keyframes title_scale {
+  0%,
+  20% {
+    scale: 0.5;
+  }
+
+  93%,
+  100% {
+    scale: 1;
+  }
+}
