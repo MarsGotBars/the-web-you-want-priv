@@ -47,114 +47,133 @@
   src: url("./../fonts/redaction/Redaction_10-Regular.2f53ef3f.woff2")
     format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\10;
   src: url("./../fonts/redaction/Redaction_10-Bold.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\10;
   src: url("./../fonts/redaction/Redaction_10-Italic.woff2") format("woff2");
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\20;
   src: url("./../fonts/redaction/Redaction_20-Regular.woff2") format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\20;
   src: url("./../fonts/redaction/Redaction_20-Bold.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\20;
   src: url("./../fonts/redaction/Redaction_20-Italic.woff2") format("woff2");
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\35;
   src: url("./../fonts/redaction/Redaction_35-Regular.woff2") format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\35;
   src: url("./../fonts/redaction/Redaction_35-Bold.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\35;
   src: url("./../fonts/redaction/Redaction_35-Italic.woff2") format("woff2");
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\50;
   src: url("./../fonts/redaction/Redaction_50-Regular.woff2") format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\50;
   src: url("./../fonts/redaction/Redaction_50-Bold.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\50;
   src: url("./../fonts/redaction/Redaction_50-Italic.woff2") format("woff2");
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\70;
   src: url("./../fonts/redaction/Redaction_70-Regular.woff2") format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\70;
   src: url("./../fonts/redaction/Redaction_70-Bold.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\70;
   src: url("./../fonts/redaction/Redaction_70-Italic.woff2") format("woff2");
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\100;
   src: url("./../fonts/redaction/Redaction_100-Regular.woff2") format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\100;
   src: url("./../fonts/redaction/Redaction_100-Bold.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Redaction\100;
   src: url("./../fonts/redaction/Redaction_100-Italic.woff2") format("woff2");
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Besley;
   src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
@@ -162,102 +181,134 @@
   src: url("./../fonts/besley/Besley-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-Italic.ttf") format("truetype");
   font-weight: 400;
   font-style: italic;
+  font-display: swap;
+
 }
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-Bold.ttf") format("truetype");
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-BoldItalic.ttf") format("truetype");
   font-weight: 700;
   font-style: italic;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-MediumItalic.ttf") format("truetype");
   font-weight: 500;
   font-style: italic;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-SemiBold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-SemiBoldItalic.ttf") format("truetype");
   font-weight: 600;
   font-style: italic;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-ExtraBoldItalic.ttf") format("truetype");
   font-weight: 800;
   font-style: italic;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-Black.ttf") format("truetype");
   font-weight: 900;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-BlackItalic.ttf") format("truetype");
   font-weight: 900;
   font-style: italic;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-Light.ttf") format("truetype");
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-LightItalic.ttf") format("truetype");
   font-weight: 300;
   font-style: italic;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-Thin.ttf") format("truetype");
   font-weight: 100;
   font-style: normal;
+  font-display: swap;
 }
+
 @font-face {
   font-family: "Besley";
   src: url("./../fonts/besley/Besley-ThinItalic.ttf") format("truetype");
   font-weight: 100;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
   font-family: Besley;
   src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
   font-weight: 400;
+  font-display: swap;
 }
 
 * {
@@ -274,6 +325,7 @@
 }
 
 body {
+  
   /* variables */
 
   /* sizings */
@@ -319,8 +371,8 @@ body {
   );
   --bg-from: oklch(
     from var(--bg-rgb) calc(l - (0.1 * var(--velocity-abs)))
-      calc(c + (0.15 * var(--velocity-abs)))
-      calc(h + (-80 * var(--velocity-abs)))
+      calc(c + (0.2 * var(--velocity-abs)))
+      calc(h + (80 * var(--velocity-abs)))
   );
 
   background-color: var(--bg-rgb);
@@ -436,8 +488,7 @@ h1 {
   --improvement-total: calc(
     var(--improvement-duration) + var(--improvement-delay)
   );
-
-  min-height: 400px;
+  min-height: 10vw;
   font-size: clamp(26px, var(--title-height), var(--title-height));
   animation: text_improvement var(--improvement-duration)
     var(--improvement-delay) var(--ease-OutQuint) forwards;
@@ -492,7 +543,8 @@ h1 {
   &::after {
     content: "Color in motion";
     position: sticky;
-    display: inline-block;
+    /* display: inline-block; */
+    display: none;
     top: 0.5rem;
     font-size: var(--text-space);
     font-family: Besley;
@@ -709,6 +761,6 @@ summary {
 }
 
 a::selection {
-  color: chartreuse;
+  color: black;
   background: var(--bg-from);
 }
