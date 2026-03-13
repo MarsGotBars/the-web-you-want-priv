@@ -10,6 +10,12 @@
   initial-value: 0;
 }
 
+@property --bg-rgb {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(149, 194, 202);
+}
+
 @font-face {
   font-family: "Redaction";
   src: url("/fonts/redaction/Redaction-Regular.woff2") format("woff2");
@@ -190,7 +196,6 @@
   font-weight: 400;
   font-style: italic;
   font-display: swap;
-
 }
 @font-face {
   font-family: "Besley";
@@ -365,14 +370,13 @@ body {
     );
   }
   --bg-oklch: oklch(
-    calc(88.167% - (0.1 * var(--velocity-abs)))
-      calc(0.15844 + (0.15 * var(--velocity-abs)))
+    calc(88.167% - (0.2 * var(--velocity-abs)))
+      calc(0.15844 + (0.2 * var(--velocity-abs)))
       calc(144.116 + (80 * var(--velocity-abs)))
   );
   --bg-from: oklch(
-    from var(--bg-rgb) calc(l - (0.1 * var(--velocity-abs)))
-      calc(c + (0.2 * var(--velocity-abs)))
-      calc(h + (80 * var(--velocity-abs)))
+    from var(--bg-rgb) calc(l - (0.2 * var(--velocity-abs)))
+      calc(c + (0.2 * var(--velocity-abs))) calc(h + (80 * var(--velocity-abs)))
   );
 
   background-color: var(--bg-rgb);
@@ -387,7 +391,6 @@ body {
     var(--scroll-velocity),
     calc(var(--scroll-velocity) * -1)
   );
-  anchor-name: --mouse-follow;
 
   display: grid;
   gap: var(--gap);
@@ -404,7 +407,16 @@ body {
   @media (min-width: var(--lgMin)) {
     --columns: 12;
   }
+
+  @container scroll-state(scrollable: bottom) {
+    header {
+      background-color: orange;
+      --bg-rgb: rgb(5, 5, 5);
+    }
+  }
+  anchor-name: --mouse-follow;
 }
+
 body:hover::after {
   opacity: 1;
 }
@@ -476,10 +488,6 @@ a {
 
 header {
   height: 100%;
-  container-name: header;
-  container-type: scroll-state;
-
-  
 }
 
 h1 {
@@ -542,18 +550,20 @@ h1 {
 
   &::after {
     content: "Color in motion";
-    position: sticky;
-    /* display: inline-block; */
-    display: none;
+    position: fixed;
+    display: inline-block;
     top: 0.5rem;
-    font-size: var(--text-space);
+    right: calc(var(--padding) / 2);
     font-family: Besley;
     font-style: normal;
     text-transform: lowercase;
     font-weight: 100;
+    font-size: 18px;
+    letter-spacing: 0;
+    text-orientation: sideways;
+    writing-mode: vertical-rl;
   }
 }
-
 
 /* CYCLE anim */
 @keyframes cycle-original {
@@ -678,28 +688,41 @@ span {
   font-family: inherit;
 }
 
-#sessions li a {
-  font-size: clamp(1rem, 3vw, 2rem);
-  position: sticky;
-  display: inline-block;
-  color: white;
-  border: 2px solid chartreuse;
-  line-height: 1;
-  padding: 0.25em 0.5em;
-  margin-bottom: 2rem;
-  top: 2rem;
-  mix-blend-mode: difference;
-}
+#sessions {
+  li {
+    position: relative;
 
-#sessions li + li {
-  margin-block-start: 1em;
-}
+    & + li {
+      margin-block-start: 1em;
+    }
 
-#sessions li img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  width: 20em;
+    a {
+      font-size: clamp(1rem, 3vw, 2rem);
+      position: sticky;
+      display: inline-block;
+      color: white;
+      border: 2px solid chartreuse;
+      line-height: 1;
+      padding: 0.25em 0.5em;
+      margin-bottom: 2rem;
+      top: 2rem;
+      mix-blend-mode: difference;
+      z-index: 2;
+    }
+
+    img {
+      pointer-events: none;
+      user-select: none;
+      display: block;
+      max-width: 100%;
+      height: auto;
+      width: 20em;
+      mix-blend-mode: exclusion;
+      &::before {
+        content: "";
+      }
+    }
+  }
 }
 
 details::details-content,
@@ -710,6 +733,8 @@ details {
 summary {
   list-style: none;
   font-weight: bold;
+  cursor: pointer;
+  display: inline-block;
 }
 
 @keyframes adjust_position {
