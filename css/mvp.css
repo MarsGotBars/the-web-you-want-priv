@@ -393,6 +393,8 @@ body {
     calc(var(--scroll-velocity) * -1)
   );
 
+  overscroll-behavior: contain;
+
   display: grid;
   gap: var(--gap);
   grid-template-columns:
