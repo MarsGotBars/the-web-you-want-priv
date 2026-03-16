@@ -13,9 +13,13 @@
 @property --bg-rgb {
   syntax: "<color>";
   inherits: true;
-  initial-value: rgb(149, 194, 202);
+  initial-value: white;
 }
-
+@property --total-count {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: white;
+}
 @font-face {
   font-family: "Redaction";
   src: url("/fonts/redaction/Redaction-Regular.woff2") format("woff2");
@@ -324,13 +328,17 @@
   font-family: Besley, "Times New Roman", serif;
 }
 
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 :root {
   animation: adjust_position linear both;
   animation-timeline: scroll(root);
 }
 
 body {
-  
   /* variables */
 
   /* sizings */
@@ -358,30 +366,23 @@ body {
   --spread: -0.02em;
 
   /* COLORS */
+  --bg-rgb: rgb(100, 228, 147);
 
-  --bg-rgb: rgb(149, 194, 202);
-
+  font-size: 20px;
+  line-height: 1.55;
+  animation: shiftHue linear both;
+  animation-timeline: scroll(root);
   /* if this ever receives support... */
-  @supports (color: rgb(random(--test, 0, 255), 0, 0)) {
-    --bg-rgb: rgb(
-      random(--bg-r, 200, 255),
-      random(--bg-g, 170, 240),
-      random(--bg-b, 160, 225)
-    );
-  }
+
   --bg-oklch: oklch(
-    calc(88.167% - (0.2 * var(--velocity-abs)))
+    calc(88.167% - (0.08 * var(--scroll-position)))
       calc(0.15844 + (0.2 * var(--velocity-abs)))
       calc(144.116 + (80 * var(--velocity-abs)))
   );
   --bg-from: oklch(
-    from var(--bg-rgb) calc(l - (0.2 * var(--velocity-abs)))
-      calc(c + (0.2 * var(--velocity-abs))) calc(h + (80 * var(--velocity-abs)))
+    from var(--bg-rgb) calc(l - (0.08 * var(--velocity-abs)))
+      calc(c + (0.1 * var(--velocity-abs))) calc(h + (80 * var(--velocity-abs)))
   );
-
-  background-color: var(--bg-rgb);
-  background-color: var(--bg-oklch);
-  background-color: var(--bg-from);
 
   transition: --scroll-position-delayed 0.2s linear;
   --scroll-velocity: calc(
@@ -402,9 +403,16 @@ body {
   @supports (background: oklch(from red l c h)) {
     background: var(--bg-from);
   }
-  font-size: 20px;
 
-  @media (min-width: var(--lgMin)) {
+  @supports (color: rgb(random(--test, 0, 255), 0, 0)) {
+    --bg-rgb: rgb(
+      random(--bg-r, 200, 255),
+      random(--bg-g, 170, 240),
+      random(--bg-b, 160, 225)
+    );
+  }
+
+  @media (min-width: 1024px) {
     --columns: 12;
   }
 
@@ -417,12 +425,18 @@ body {
   anchor-name: --mouse-follow;
 }
 
+@keyframes shiftHue {
+  to {
+    --test: 1;
+  }
+}
+
 body:hover::after {
   opacity: 1;
 }
 body > * {
   grid-column: 2 / -2;
-  @media (min-width: var(--lgMin)) {
+  @media (min-width: 1024px) {
     grid-column: 2 / -3;
   }
 }
@@ -476,6 +490,7 @@ h6,
 abbr,
 p,
 summary {
+  letter-spacing: var(--spread);
   mix-blend-mode: difference;
   color: white;
   isolation: isolate;
@@ -551,17 +566,20 @@ h1 {
   &::after {
     content: "Color in motion";
     position: fixed;
-    display: inline-block;
-    top: 0.5rem;
-    right: calc(var(--padding) / 2);
+    display: block;
+    line-height: 1;
+    height: 100svh;
+    padding-inline: 1rem;
+    bottom: 0;
+    right: var(--padding);
     font-family: Besley;
     font-style: normal;
     text-transform: lowercase;
     font-weight: 100;
-    font-size: 18px;
+    font-size: var(--column-width);
     letter-spacing: 0;
-    text-orientation: sideways;
     writing-mode: vertical-rl;
+    text-orientation: sideways;
   }
 }
 
@@ -680,7 +698,7 @@ h6 {
   @supports (animation-timeline: view()) {
     animation: text_improvement 0.75s var(--ease-OutQuint) both;
     animation-timeline: view();
-    animation-range: entry 25% exit 75%;
+    animation-range: entry 50% exit 65%;
   }
 }
 
@@ -689,37 +707,44 @@ span {
 }
 
 #sessions {
-  li {
-    position: relative;
+  ul {
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+    li {
+      --total-count: sibling-count();
+      list-style: none;
+      position: relative;
 
-    & + li {
-      margin-block-start: 1em;
-    }
+      & + li {
+        margin-block-start: 1em;
+      }
 
-    a {
-      font-size: clamp(1rem, 3vw, 2rem);
-      position: sticky;
-      display: inline-block;
-      color: white;
-      border: 2px solid chartreuse;
-      line-height: 1;
-      padding: 0.25em 0.5em;
-      margin-bottom: 2rem;
-      top: 2rem;
-      mix-blend-mode: difference;
-      z-index: 2;
-    }
+      a {
+        font-size: clamp(1rem, 3vw, 2rem);
+        position: sticky;
+        display: inline-block;
+        color: white;
+        border: 2px solid chartreuse;
+        line-height: 1;
+        padding: 0.25em 0.5em;
+        margin-bottom: 2rem;
+        top: 2rem;
+        mix-blend-mode: difference;
+        z-index: 2;
+      }
 
-    img {
-      pointer-events: none;
-      user-select: none;
-      display: block;
-      max-width: 100%;
-      height: auto;
-      width: 20em;
-      mix-blend-mode: exclusion;
-      &::before {
-        content: "";
+      img {
+        pointer-events: none;
+        user-select: none;
+        display: block;
+        max-width: 100%;
+        height: auto;
+        width: 20em;
+        mix-blend-mode: exclusion;
+        &::before {
+          content: "";
+        }
       }
     }
   }
