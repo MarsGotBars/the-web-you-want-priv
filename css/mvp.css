@@ -378,7 +378,7 @@ body {
   font-size: 20px;
   line-height: 1.55;
 
-  @media (prefers-reduced-motion: reduce){
+  @media (prefers-reduced-motion: no-preference){
     animation:
       shiftHue linear,
       scheme-shift linear;
