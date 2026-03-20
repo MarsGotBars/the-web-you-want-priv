@@ -13,13 +13,20 @@
 @property --bg-rgb {
   syntax: "<color>";
   inherits: true;
-  initial-value: white;
+  initial-value: rgb(100, 228, 147);
 }
 @property --total-count {
   syntax: "<number>";
   inherits: true;
-  initial-value: white;
+  initial-value: 0;
 }
+
+@property --strip-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @font-face {
   font-family: "Redaction";
   src: url("/fonts/redaction/Redaction-Regular.woff2") format("woff2");
@@ -370,9 +377,14 @@ body {
 
   font-size: 20px;
   line-height: 1.55;
-  animation: shiftHue linear both;
-  animation-timeline: scroll(root);
-  /* if this ever receives support... */
+
+  @media (prefers-reduced-motion: reduce){
+    animation:
+      shiftHue linear,
+      scheme-shift linear;
+  }
+  animation-fill-mode: both;
+  animation-timeline: scroll(root), scroll(root);
 
   --bg-oklch: oklch(
     calc(88.167% - (0.08 * var(--scroll-position)))
@@ -384,7 +396,7 @@ body {
       calc(c + (0.1 * var(--velocity-abs))) calc(h + (80 * var(--velocity-abs)))
   );
 
-  transition: --scroll-position-delayed 0.2s linear;
+  transition: --scroll-position-delayed 0.3s var(--ease-OutQuint);
   --scroll-velocity: calc(
     var(--scroll-position) - var(--scroll-position-delayed)
   );
@@ -496,6 +508,9 @@ summary {
   mix-blend-mode: difference;
   color: white;
   isolation: isolate;
+  @media (prefers-reduced-motion: no-preference){
+    transform: translateY(calc(50% * (var(--scroll-velocity)))) scale(calc(1 + (.02 * var(--scroll-velocity))));
+  }
 }
 
 a {
@@ -565,13 +580,28 @@ h1 {
     }
   }
 
+  &::before {
+    content: "";
+    position: fixed;
+    display: block;
+    height: 100svh;
+    padding-block: 1rem;
+    bottom: 0;
+    right: var(--padding);
+    background: red;
+    height: 100%;
+    width: var(--column-width);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
   &::after {
     content: "Color in motion";
     position: fixed;
-    display: block;
+    display: none;
     line-height: 1;
     height: 100svh;
-    padding-inline: 1rem;
+    text-align: center;
     bottom: 0;
     right: var(--padding);
     font-family: Besley;
@@ -579,9 +609,19 @@ h1 {
     text-transform: lowercase;
     font-weight: 100;
     font-size: var(--column-width);
+    color: transparent;
     letter-spacing: 0;
     writing-mode: vertical-rl;
     text-orientation: sideways;
+    background-image: linear-gradient(white, white);
+    background-size: 100% calc(var(--scroll-position-delayed) * 100%);
+    background-repeat: no-repeat;
+    background-position: top;
+    background-clip: text;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
   }
 }
 
@@ -711,27 +751,53 @@ span {
 #sessions {
   ul {
     padding: 0;
+    margin-block: 6em;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-    li {
-      --total-count: sibling-count();
-      list-style: none;
-      position: relative;
+    grid-template-columns: 1fr;
+    place-content: center;
+    grid-template-rows: 1fr;
+    animation: drive-strip linear both;
+    animation-timeline: view(block);
+    animation-range: entry-crossing 110% exit-crossing -10%;
+    height: 50svh;
+    overflow-x: hidden;
+    overflow-x: clip;
+    position: relative;
 
-      & + li {
-        margin-block-start: 1em;
-      }
+    li {
+      grid-row: 1;
+      grid-column: 1;
+      --total-count: calc(sibling-index() - 1);
+      --test: calc(sibling-count() - (sibling-index() - 1));
+      top: 0;
+      position: sticky;
+
+      font-size: clamp(1rem, 3vw, 2rem);
+
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transform: translateX(
+        calc(
+          (sibling-count() * -100%) + (100% * (sibling-index())) -
+            (var(--strip-progress) * -100% * (sibling-count() - 1))
+        )
+      );
+
+
+      mix-blend-mode: exclusion;
+      max-height: 50svh;
+      aspect-ratio: 1 / 1;
+      position: relative !important;
 
       a {
-        font-size: clamp(1rem, 3vw, 2rem);
-        position: sticky;
+        position: absolute;
+        top: 100%;
         display: inline-block;
         color: white;
         border: 2px solid chartreuse;
         line-height: 1;
-        padding: 0.25em 0.5em;
-        margin-bottom: 2rem;
-        top: 2rem;
         mix-blend-mode: difference;
         z-index: 2;
       }
@@ -740,14 +806,20 @@ span {
         pointer-events: none;
         user-select: none;
         display: block;
-        max-width: 100%;
-        height: auto;
-        width: 20em;
+        object-fit: cover;
+        width: 100%;
+        aspect-ratio: 1 / 1;
         mix-blend-mode: exclusion;
-        &::before {
-          content: "";
-        }
       }
+      /* &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: white;
+      } */
     }
   }
 }
@@ -815,4 +887,21 @@ summary {
 a::selection {
   color: black;
   background: var(--bg-from);
+}
+
+@keyframes scheme-shift {
+  0%,
+  24.9% {
+    --bg-rgb: rgb(100, 228, 147);
+  }
+  25%,
+  100% {
+    --bg-rgb: rgb(21, 36, 137);
+  }
+}
+
+@keyframes drive-strip {
+  to {
+    --strip-progress: 1;
+  }
 }
