@@ -412,7 +412,11 @@
 ::selection,
 a::selection {
   color: black;
-  background: var(--bg-from);
+  background: white;
+}
+
+a::selection {
+  text-decoration: underline solid black;
 }
 
 /* ===== :root ===== */
@@ -436,6 +440,24 @@ body {
   /* easings */
   --ease-OutQuint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-Quad: cubic-bezier(0.44, 0, 0.56, 1);
+  --overshoot-ease: linear(
+    0,
+    0.49 7.4%,
+    0.864 15.3%,
+    1.005 19.4%,
+    1.12 23.7%,
+    1.206 28.1%,
+    1.267 32.8%,
+    1.296 36.4%,
+    1.311 40.2%,
+    1.313 44.2%,
+    1.301 48.6%,
+    1.252 56.9%,
+    1.105 74.4%,
+    1.048 82.5%,
+    1.011 91.1%,
+    1
+  );
 
   /* grid / spacing related */
   --gap: 0.5rem;
@@ -596,6 +618,12 @@ h6 {
   color: black;
   display: inline-block;
   font-family: Redaction;
+
+  &::selection {
+    color: white;
+    background: black;
+    text-decoration: underline solid white;
+  }
   @supports (animation-timeline: view()) {
     animation: text_improvement 0.75s var(--ease-OutQuint) both;
     animation-timeline: view();
@@ -629,6 +657,7 @@ p {
   text-wrap: balance;
   text-wrap: pretty;
   max-width: 65ch;
+  line-height: 1.6;
 }
 
 /* ===== header ===== */
@@ -776,6 +805,11 @@ header {
         animation: adjust-to-cycle var(--span-animation);
         display: inline-block;
       }
+      &::selection {
+        color: white;
+        background: black;
+        text-decoration: underline solid white;
+      }
     }
   }
 
@@ -864,6 +898,7 @@ footer {
       margin-top: var(--general-spacer);
     }
   }
+
   h2,
   h3,
   h4 {
@@ -902,101 +937,133 @@ footer {
   h3 ~ *:not(h3, h4, h5, em) {
     padding-left: calc(var(--spacing) * 2);
   }
+
+  h4 ~ *:not(h5, h6, em) {
+    padding-left: calc(var(--spacing) * 3);
+  }
 }
 
 aside:has(+ *) {
-    margin-bottom: calc(var(--general-spacer) * 1.25);
+  margin-bottom: calc(var(--general-spacer) * 1.25);
 
-    &::before {
-        height: calc(100% + var(--gap) + (var(--general-spacer) * 1.25));
-    }
+  &::before {
+    height: calc(100% + var(--gap) + (var(--general-spacer) * 1.25));
+  }
+}
+
+aside h2 {
+  margin-bottom: calc(var(--general-spacer) * 0.5);
 }
 /* ===== #sessions ===== */
 
 #sessions {
   ul {
     --container-height: 35svh;
+    --image-size: 200px;
     padding: 0;
     font-size: clamp(1rem, 3vw, 2rem);
     margin-top: 2em;
     margin-bottom: 5em;
     display: grid;
-    grid-template-columns: 1fr;
-    place-content: center;
-    grid-template-rows: 1fr;
-    height: var(--container-height);
-    overflow-x: hidden;
-    overflow-x: clip;
+    grid-template-columns: repeat(auto-fit, minmax(var(--image-size), 1fr));
+    padding: calc(var(--gap) + 0.5rem);
+    padding-left: var(--gap);
+    gap: 0 var(--gap);
+    background: white;
+
     position: relative;
 
     animation: drive-strip linear both;
     animation-timeline: view(block);
     animation-range: entry-crossing 130% exit-crossing -20%;
 
+    &::before {
+      content: "";
+      background: white;
+      width: 0.25rem;
+      top: 0;
+      height: 100%;
+      position: absolute;
+      left: -0.25rem;
+      mix-blend-mode: exclusion;
+    }
+
+    @supports (width: calc(5px * sibling-index())) {
+      overflow-x: hidden;
+      overflow-x: clip;
+      grid-template-columns: 1fr;
+      place-content: center;
+      grid-template-rows: 1fr;
+      gap: unset;
+      padding: 0;
+      height: var(--container-height);
+      background: transparent;
+    }
+
     @media (min-width: 1024px) {
       --container-height: 50svh;
+      --image-size: 300px;
     }
 
     li {
-      --total-count: calc(sibling-index() - 1);
-      --test: calc(sibling-count() - (sibling-index() - 1));
       /* Horizontal offset in item-widths (0 = in view, mirrors the transform) */
-      --offset: calc(
-        -1 * sibling-count() + sibling-index() + var(--strip-progress) *
-          (sibling-count() - 1)
-      );
-      --abs-offset: max(var(--offset), calc(-1 * var(--offset)));
-      --fade: clamp(0, calc(1.5 - var(--offset)), 1);
 
-      grid-row: 1;
-      grid-column: 1;
-      top: 0;
-      position: sticky;
+      background: white;
+      @supports (width: calc(5px * sibling-index())) {
+        background: transparent;
+
+        /* if the browser supports the new relational properties, use them! */
+        --offset: calc(
+          -1 * sibling-count() + sibling-index() + var(--strip-progress) *
+            (sibling-count() - 2)
+        );
+        --abs-offset: max(var(--offset), calc(-1 * var(--offset)));
+        --fade: clamp(0, calc(1.5 - var(--offset)), 1);
+
+        transform: translateX(
+          calc(
+            (sibling-count() * (-100% - 1.25rem)) +
+              ((100% + 1.25rem) * (sibling-index())) -
+              (
+                var(--strip-progress) * (-100% - 1.25rem) *
+                  (sibling-count() - 1)
+              )
+          )
+        );
+
+        /* overshoot! */
+        transition: transform 0.2s var(--overshoot-ease);
+        grid-row: 1;
+        grid-column: 1;
+        aspect-ratio: 1 / 1;
+        max-height: var(--container-height);
+      }
+
       list-style: none;
       display: flex;
       flex-direction: column-reverse;
       justify-content: flex-end;
-      transform: translateX(
-        calc(
-          (sibling-count() * (-100% - 1.25rem)) +
-            ((100% + 1.25rem) * (sibling-index())) -
-            (var(--strip-progress) * (-100% - 1.25rem) * (sibling-count() - 1))
-        )
-      );
-
-      opacity: var(--fade);
+      opacity: var(--fade, 1);
       mix-blend-mode: exclusion;
-      max-height: var(--container-height);
-      aspect-ratio: 1 / 1;
       position: relative;
-
-      /* overshoot! */
-      transition: transform 0.2s
-        linear(
-          0,
-          0.49 7.4%,
-          0.864 15.3%,
-          1.005 19.4%,
-          1.12 23.7%,
-          1.206 28.1%,
-          1.267 32.8%,
-          1.296 36.4%,
-          1.311 40.2%,
-          1.313 44.2%,
-          1.301 48.6%,
-          1.252 56.9%,
-          1.105 74.4%,
-          1.048 82.5%,
-          1.011 91.1%,
-          1
-        );
 
       a {
         display: inline-block;
         color: black;
         background: white;
-        line-height: 1;
         padding: 0.5rem 0.75rem;
+        height: 100%;
+        font-size: 16px;
+
+        @media (min-width: 1024px) {
+          font-size: 20px;
+        }
+
+        &::selection {
+          color: white;
+          background: black;
+          text-decoration: underline solid white;
+        }
       }
 
       img {
