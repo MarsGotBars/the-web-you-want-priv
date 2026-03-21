@@ -653,7 +653,8 @@ a {
   text-decoration-thickness: 1px;
 }
 
-p {
+p,
+summary {
   text-wrap: balance;
   text-wrap: pretty;
   max-width: 65ch;
@@ -666,7 +667,11 @@ header {
   height: 100%;
   position: relative;
   font-size: clamp(26px, var(--title-height), var(--title-height));
+  margin-bottom: 0.75rem;
 
+  > *:not(h1) {
+    padding-left: 0.5rem;
+  }
   &::before {
     content: "";
     background: white;
@@ -705,6 +710,8 @@ header {
     text-transform: uppercase;
     transition: font-weight 2s ease;
     transition-delay: 5s;
+
+    margin-bottom: 0.5rem;
 
     background: white;
     color: black;
@@ -951,8 +958,24 @@ aside:has(+ *) {
   }
 }
 
-aside h2 {
-  margin-bottom: calc(var(--general-spacer) * 0.5);
+aside {
+  h2 {
+    margin-bottom: calc(var(--general-spacer) * 0.5);
+  }
+
+  &:last-of-type {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: var(--spacing);
+      background-color: white;
+      top: 0;
+      width: 0.25rem;
+      height: 100%;
+    }
+  }
 }
 /* ===== #sessions ===== */
 
@@ -962,13 +985,12 @@ aside h2 {
     --image-size: 200px;
     padding: 0;
     font-size: clamp(1rem, 3vw, 2rem);
-    margin-top: 2em;
-    margin-bottom: 5em;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--image-size), 1fr));
     padding: calc(var(--gap) + 0.5rem);
     padding-left: var(--gap);
-    gap: 0 var(--gap);
+    margin-block: 1.5rem;
+    gap: var(--gap);
     background: white;
 
     position: relative;
@@ -994,10 +1016,11 @@ aside h2 {
       grid-template-columns: 1fr;
       place-content: center;
       grid-template-rows: 1fr;
-      gap: unset;
       padding: 0;
       height: var(--container-height);
       background: transparent;
+      margin-top: 2em;
+      margin-bottom: 5em;
     }
 
     @media (min-width: 1024px) {
@@ -1007,37 +1030,9 @@ aside h2 {
 
     li {
       /* Horizontal offset in item-widths (0 = in view, mirrors the transform) */
-
-      background: white;
-      @supports (width: calc(5px * sibling-index())) {
-        background: transparent;
-
-        /* if the browser supports the new relational properties, use them! */
-        --offset: calc(
-          -1 * sibling-count() + sibling-index() + var(--strip-progress) *
-            (sibling-count() - 2)
-        );
-        --abs-offset: max(var(--offset), calc(-1 * var(--offset)));
-        --fade: clamp(0, calc(1.5 - var(--offset)), 1);
-
-        transform: translateX(
-          calc(
-            (sibling-count() * (-100% - 1.25rem)) +
-              ((100% + 1.25rem) * (sibling-index())) -
-              (
-                var(--strip-progress) * (-100% - 1.25rem) *
-                  (sibling-count() - 1)
-              )
-          )
-        );
-
-        /* overshoot! */
-        transition: transform 0.2s var(--overshoot-ease);
-        grid-row: 1;
-        grid-column: 1;
-        aspect-ratio: 1 / 1;
-        max-height: var(--container-height);
-      }
+      --primary: black;
+      --secondary: white;
+      background: var(--secondary);
 
       list-style: none;
       display: flex;
@@ -1046,37 +1041,92 @@ aside h2 {
       opacity: var(--fade, 1);
       mix-blend-mode: exclusion;
       position: relative;
+      /* overshoot! */
+      transition:
+        transform 0.2s var(--overshoot-ease),
+        scale 0.2s var(--overshoot-ease);
 
-      &:has(a:hover){
-        background: white;
+      &:has(a:hover) {
+        background: var(--primary);
+      }
+
+      scale: 0.98;
+      &:hover {
+        scale: 1;
+      }
+
+      @supports (width: calc(5px * sibling-index())) {
+        --primary: black;
+        --secondary: white;
+
+        background: transparent;
+
+        /* if the browser supports the new relational properties, use them! */
+        --offset: calc(
+          -1 * sibling-count() + sibling-index() + var(--strip-progress) *
+            (sibling-count() - 1)
+        );
+        --abs-offset: max(var(--offset), calc(-1 * var(--offset)));
+        --fade: clamp(0, calc(1.5 - var(--offset)), 1);
+
+        transform: translateX(
+            calc(
+              (sibling-count() * (-100% - 3rem)) +
+                ((100% + 3rem) * (sibling-index())) -
+                (var(--strip-progress) * (-100% - 3rem) * (sibling-count() - 1))
+            )
+          )
+          scale(0.99);
+        transform-origin: left;
+
+        grid-row: 1;
+        grid-column: 1;
+        aspect-ratio: 1 / 1;
+        max-height: var(--container-height);
+
+        &:hover {
+          transform: translateX(
+              calc(
+                (sibling-count() * (-100% - 2rem)) +
+                  ((100% + 2rem) * (sibling-index())) -
+                  (
+                    var(--strip-progress) * (-100% - 2rem) *
+                      (sibling-count() - 1)
+                  )
+              )
+            )
+            scale(1);
+        }
       }
 
       a {
         display: inline-block;
-        color: black;
-        background: white;
+        color: var(--primary);
+        background: var(--secondary);
         padding: 0.5rem 0.75rem;
         height: 100%;
         font-size: 16px;
+        border-bottom: 2px solid transparent;
 
-        &:hover{
-            background: black;
-            color: white;
+        &:hover {
+          background: var(--primary);
+          color: var(--secondary);
+          border-color: var(--secondary);
 
-            &::selection {
-          color: black;
-          background: white;
-          text-decoration: underline solid black;
-        }
+          &::selection {
+            color: var(--primary);
+            background: var(--secondary);
+            text-decoration: underline solid var(--primary);
+          }
         }
 
         &::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
         }
 
         @media (min-width: 1024px) {
@@ -1106,48 +1156,73 @@ aside h2 {
 /* ===== details ===== */
 
 details {
-  content-visibility: visible;
+  /* content-visibility: visible;
 
   &::details-content {
     content-visibility: visible;
+  } */
+  &:not(:first-child) {
+    margin-top: var(--general-spacer);
   }
-
+  transition: height 0.2s ease;
   summary {
+    padding: 0.25rem 0.5rem;
     list-style: none;
     font-weight: bold;
     cursor: pointer;
     display: inline-block;
+    width: 35ch;
+    background: white;
+    color: black;
+  }
+
+  p {
+    margin-top: 0.5rem;
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+    transition: all 0.3s var(--ease-Quad);
+    margin-left: 0.5rem;
   }
 }
 
-footer ul li {
+footer ul li,
+header p {
   list-style: none;
   --hover-direction: 2;
   &:has(a) {
     color: chartreuse;
-  }
 
-  &::before,
-  &::after {
-    --direction: 1;
-    content: "✱";
-    color: inherit;
-    text-decoration-thickness: 0px;
-    transition: rotate 200ms var(--overshoot-ease);
-    transform-origin: center;
-    display: inline-block;
-    user-select: none;
-    pointer-events: none;
-  }
+    &::before,
+    &::after {
+      --direction: 1;
+      content: "";
+      background-color: currentColor;
+      mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-14 -14 28 28'%3E%3Crect x='-3' y='-12' width='6' height='24' rx='2' transform='rotate(0)'/%3E%3Crect x='-3' y='-12' width='6' height='24' rx='2' transform='rotate(60)'/%3E%3Crect x='-3' y='-12' width='6' height='24' rx='2' transform='rotate(120)'/%3E%3C/svg%3E");
+      mask-size: contain;
+      mask-repeat: no-repeat;
+      mask-position: center;
+      height: 1em;
+      width: 1em;
+      vertical-align: revert;
+      text-decoration-thickness: 0px;
+      transition:
+        rotate 0.5s var(--overshoot-ease),
+        scale 0.4s var(--overshoot-ease);
+      display: inline-block;
+      user-select: none;
+      pointer-events: none;
+    }
 
-  &::after {
-    --direction: -1;
+    &::after {
+      --direction: -1;
+    }
   }
 
   &:has(a:hover) {
     &::before,
     &::after {
       rotate: calc(120deg * var(--direction));
+      scale: 0.8;
     }
   }
 
