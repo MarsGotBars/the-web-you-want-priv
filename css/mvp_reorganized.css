@@ -905,7 +905,7 @@ footer {
     position: relative;
     margin-left: calc(var(--spacing) * var(--index, 1));
 
-    &:has(+ p) {
+    &:has(+ p, + ul) {
       margin-bottom: 0.75rem;
     }
 
@@ -1047,6 +1047,10 @@ aside h2 {
       mix-blend-mode: exclusion;
       position: relative;
 
+      &:has(a:hover){
+        background: white;
+      }
+
       a {
         display: inline-block;
         color: black;
@@ -1054,6 +1058,26 @@ aside h2 {
         padding: 0.5rem 0.75rem;
         height: 100%;
         font-size: 16px;
+
+        &:hover{
+            background: black;
+            color: white;
+
+            &::selection {
+          color: black;
+          background: white;
+          text-decoration: underline solid black;
+        }
+        }
+
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
 
         @media (min-width: 1024px) {
           font-size: 20px;
@@ -1093,5 +1117,54 @@ details {
     font-weight: bold;
     cursor: pointer;
     display: inline-block;
+  }
+}
+
+footer ul li {
+  list-style: none;
+  --hover-direction: 2;
+  &:has(a) {
+    color: chartreuse;
+  }
+
+  &::before,
+  &::after {
+    --direction: 1;
+    content: "✱";
+    color: inherit;
+    text-decoration-thickness: 0px;
+    transition: rotate 200ms var(--overshoot-ease);
+    transform-origin: center;
+    display: inline-block;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &::after {
+    --direction: -1;
+  }
+
+  &:has(a:hover) {
+    &::before,
+    &::after {
+      rotate: calc(120deg * var(--direction));
+    }
+  }
+
+  a {
+    position: relative;
+    padding: 0 0.5rem;
+
+    &::before {
+      cursor: pointer;
+      content: "";
+      position: absolute;
+      left: calc(-0.5rem - 1ch);
+      top: 0;
+      height: 100%;
+      width: calc(100% + (1rem + 2ch));
+      z-index: -1;
+      mix-blend-mode: exclusion;
+    }
   }
 }
