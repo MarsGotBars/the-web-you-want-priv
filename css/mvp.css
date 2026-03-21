@@ -375,7 +375,10 @@ body {
   /* COLORS */
   --bg-rgb: rgb(100, 228, 147);
 
-  font-size: 20px;
+  font-size: 1rem;
+  @media (min-width: 1024px) {
+    font-size: 20px;
+  }
   line-height: 1.55;
   @media (prefers-reduced-motion: no-preference) {
     animation:
@@ -500,7 +503,11 @@ summary {
   color: white;
   isolation: isolate;
 }
-
+abbr {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
 h2,
 h3,
 h4,
@@ -602,18 +609,27 @@ h1 {
   }
 
   &::before {
-    content: "";
+    content: "Color in motion";
     position: fixed;
-    display: block;
+    display: none;
+    line-height: 1;
     height: 100svh;
-    padding-block: 1rem;
+    text-align: center;
     bottom: 0;
     right: var(--padding);
-    background: red;
-    height: 100%;
-    width: var(--column-width);
-    transform: scaleY(0);
-    transform-origin: top;
+    font-family: Besley;
+    font-style: normal;
+    text-transform: lowercase;
+    font-weight: 100;
+    font-size: var(--column-width);
+    color: red;
+    letter-spacing: 0;
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+
+    @media (min-width: 1024px) {
+      display: block;
+    }
   }
 
   &::after {
@@ -635,7 +651,7 @@ h1 {
     writing-mode: vertical-rl;
     text-orientation: sideways;
     background-image: linear-gradient(white, white);
-    background-size: 100% calc(var(--scroll-position-delayed) * 100%);
+    background-size: 100% calc(var(--scroll-position) * 100%);
     background-repeat: no-repeat;
     background-position: top;
     background-clip: text;
@@ -753,11 +769,14 @@ h1 {
 main,
 aside,
 footer {
-  --margin-left: 1rem;
+  --margin-left: 0.5rem;
+  @media (min-width: 1024px) {
+    --margin-left: 1rem;
+  }
   mix-blend-mode: exclusion;
   position: relative;
 
-  &:has(+ *) {
+  &:not(:last-child) {
     --extra-padding: var(--gap);
   }
 
@@ -771,47 +790,55 @@ footer {
     position: absolute;
   }
 
-  > * {
-    margin-left: var(--margin-left);
+  *:not(em, p > a, abbr, section, ul *) {
+    padding-left: var(--margin-left);
+    &:is(h2, h3, h4, h5, h6, abbr) {
+      padding-inline: var(--margin-left);
+    }
   }
 
-  h2 {
+  h2,
+  h3,
+  h4 {
+    position: relative;
+    margin-left: calc(var(--margin-left) * var(--index, 1));
+
+    &:has(+ p){
+      margin-bottom: 1rem;
+    }
+
     &::before {
       mix-blend-mode: hue;
       content: "";
       background: white;
       top: 50%;
-      left: calc(-1 * var(--margin-left) - 0.25rem);
+      left: calc((-1 * var(--index, 1)) * var(--margin-left) - 0.25rem);
       transform: translateY(-50%);
       height: 0.25rem;
-      width: calc(1 * var(--margin-left));
+      width: calc(var(--index, 1) * var(--margin-left) + 0.25rem);
       position: absolute;
     }
   }
 
   h3 {
-    margin-left: var(--margin-left);
-    position: relative;
-    &::before {
-      mix-blend-mode: hue;
-      content: "";
-      background: white;
-      top: 50%;
-      left: calc(-2 * var(--margin-left) - 0.25rem);
-      transform: translateY(-50%);
-      height: 0.25rem;
-      width: calc(2 * var(--margin-left));
-      position: absolute;
-    }
+    --index: 2;
   }
 
-  h3 ~ * {
-    margin-left: calc(var(--margin-left) * 2);
+  h4 {
+    --index: 3;
+  }
+
+  h5 {
+    --index: 4;
+  }
+
+  h3 ~ *:not(h3, h4, h5, em) {
+    padding-left: calc(var(--margin-left) * 2);
   }
 }
 /* Font sizes */
-@media (min-width: 1024px ){
-  h2{
+@media (min-width: 1024px) {
+  h2 {
     font-size: 1.5em;
   }
   h3 {
@@ -819,12 +846,15 @@ footer {
   }
 }
 
-abbr,
 h2,
 h3,
 h4,
 h5,
 h6 {
+  background: white;
+  mix-blend-mode: exclusion;
+  color: black;
+  display: inline-block;
   font-family: Redaction\100;
   @supports (animation-timeline: view()) {
     animation: text_improvement 0.75s var(--ease-OutQuint) both;
@@ -898,15 +928,6 @@ span {
         aspect-ratio: 1 / 1;
         mix-blend-mode: exclusion;
       }
-      /* &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background-color: white;
-      } */
     }
   }
 }
