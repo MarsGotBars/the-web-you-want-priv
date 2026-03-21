@@ -192,41 +192,26 @@
 /* ===== @font-face: Besley ===== */
 
 @font-face {
-  font-family: "Besley";
-  src: url("./../fonts/besley/Besley-Thin.ttf") format("truetype");
-  font-weight: 100;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Besley";
-  src: url("./../fonts/besley/Besley-Regular.ttf") format("truetype");
+  font-family: Besley;
+  src: url("./../fonts/besley/Besley-Book.ttf") format("truetype");
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Besley";
-  src: url("./../fonts/besley/Besley-Italic.ttf") format("truetype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Besley";
-  src: url("./../fonts/besley/Besley-Bold.ttf") format("truetype");
-  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: Besley;
-  src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
+  src: url("./../fonts/besley/Besley-BookItalic.ttf") format("truetype");
   font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Besley;
+  src: url("./../fonts/besley/Besley-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
   font-display: swap;
 }
 
@@ -651,6 +636,7 @@ a {
   mix-blend-mode: difference;
   text-decoration-style: double;
   text-decoration-thickness: 1px;
+  font-weight: 500;
 }
 
 p,
@@ -736,8 +722,8 @@ header {
       font-family: Besley;
       font-style: normal;
       text-transform: lowercase;
-      font-weight: 100;
-      font-size: var(--column-width);
+      font-weight: 400;
+      font-size: calc(var(--column-width) * 0.75);
       color: red;
       letter-spacing: 0;
       writing-mode: vertical-rl;
@@ -760,8 +746,8 @@ header {
       font-family: Besley;
       font-style: normal;
       text-transform: lowercase;
-      font-weight: 100;
-      font-size: var(--column-width);
+      font-weight: 400;
+      font-size: calc(var(--column-width) * 0.75);
       color: transparent;
       letter-spacing: 0;
       writing-mode: vertical-rl;
@@ -827,34 +813,6 @@ header {
     }
   }
 }
-
-/* h1::after {
-  content: "";
-  border-block-start: 3px solid red;
-  border-block-end: 3px solid red;
-
-
-  background: 
-    red;
-
-  position: absolute;
-  position-anchor: --pageTitle;
-
-  left: anchor(left);
-  right: anchor(right);
-  top: anchor(top);
-  bottom: anchor(bottom);
-
-  pointer-events: none;
-  z-index: -1;
-
-  opacity: 0;
-  transition: inset 300ms, opacity 700ms;
-} */
-
-/* h1 span:is(:hover, :focus-visible) {
-  anchor-name: --pageTitle;
-} */
 
 /* ===== main, aside, footer ===== */
 
@@ -1029,7 +987,6 @@ aside {
     }
 
     li {
-      /* Horizontal offset in item-widths (0 = in view, mirrors the transform) */
       --primary: black;
       --secondary: white;
       background: var(--secondary);
@@ -1044,7 +1001,8 @@ aside {
       /* overshoot! */
       transition:
         transform 0.2s var(--overshoot-ease),
-        scale 0.2s var(--overshoot-ease);
+        scale 0.2s var(--overshoot-ease),
+        opacity 0.2s var(--ease-OutQuint);
 
       &:has(a:hover) {
         background: var(--primary);
@@ -1061,7 +1019,6 @@ aside {
 
         background: transparent;
 
-        /* if the browser supports the new relational properties, use them! */
         --offset: calc(
           -1 * sibling-count() + sibling-index() + var(--strip-progress) *
             (sibling-count() - 1)
@@ -1096,6 +1053,14 @@ aside {
               )
             )
             scale(1);
+
+        opacity: 1;
+
+        }
+
+
+        &:has(a:hover) {
+          background: white;
         }
       }
 
@@ -1103,6 +1068,7 @@ aside {
         display: inline-block;
         color: var(--primary);
         background: var(--secondary);
+        mix-blend-mode: normal;
         padding: 0.5rem 0.75rem;
         height: 100%;
         font-size: 16px;
@@ -1156,14 +1122,11 @@ aside {
 /* ===== details ===== */
 
 details {
-  /* content-visibility: visible;
 
-  &::details-content {
-    content-visibility: visible;
-  } */
   &:not(:first-child) {
     margin-top: var(--general-spacer);
   }
+
   transition: height 0.2s ease;
   summary {
     padding: 0.25rem 0.5rem;
