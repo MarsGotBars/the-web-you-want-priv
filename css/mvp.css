@@ -377,14 +377,13 @@ body {
 
   font-size: 20px;
   line-height: 1.55;
-
-  @media (prefers-reduced-motion: no-preference){
+  @media (prefers-reduced-motion: no-preference) {
     animation:
       shiftHue linear,
       scheme-shift linear;
+    animation-fill-mode: both;
+    animation-timeline: scroll(root), scroll(root);
   }
-  animation-fill-mode: both;
-  animation-timeline: scroll(root), scroll(root);
 
   --bg-oklch: oklch(
     calc(88.167% - (0.08 * var(--scroll-position)))
@@ -401,8 +400,8 @@ body {
     var(--scroll-position) - var(--scroll-position-delayed)
   );
   --velocity-abs: max(
-    var(--scroll-velocity),
-    calc(var(--scroll-velocity) * -1)
+    calc(var(--scroll-velocity) * 1.5),
+    calc(var(--scroll-velocity) * -1.5)
   );
 
   overscroll-behavior: contain;
@@ -436,7 +435,7 @@ body {
       --bg-rgb: rgb(5, 5, 5);
     }
   }
-  anchor-name: --mouse-follow;
+  anchor-name: --focus-follow;
 }
 
 @keyframes shiftHue {
@@ -445,9 +444,10 @@ body {
   }
 }
 
-body:hover::after {
+body:has(:focus-visible)::after {
   opacity: 1;
 }
+
 body > * {
   grid-column: 2 / -2;
   @media (min-width: 1024px) {
@@ -455,22 +455,11 @@ body > * {
   }
 }
 
-/* body::before {
-  content: "";
-  position: fixed;
-  top: 0vh;
-  left: 0;
-  height: 200vh;
-  width: calc(var(--padding) - var(--gap));
-  background: rgb(19, 13, 105);
-  mix-blend-mode: multiply;
-} */
-
 /* cool idea */
-/* body::after {
+body::after {
   content: "";
   position: absolute;
-  position-anchor: --mouse-follow;
+  position-anchor: --focus-follow;
   left: anchor(left);
   right: anchor(right);
   top: anchor(top);
@@ -489,11 +478,13 @@ body > * {
     inset 300ms,
     opacity 0ms;
 }
-body > * > *:is(:hover, :focus-visible){
-  anchor-name: --mouse-follow;
+
+body *:focus-visible,
+body * *:focus-visible {
+  anchor-name: --focus-follow;
   color: white;
   transition: color 300ms;
-} */
+}
 
 h1,
 h2,
@@ -508,8 +499,38 @@ summary {
   mix-blend-mode: difference;
   color: white;
   isolation: isolate;
-  @media (prefers-reduced-motion: no-preference){
-    transform: translateY(calc(50% * (var(--scroll-velocity)))) scale(calc(1 + (.02 * var(--scroll-velocity))));
+}
+
+h2,
+h3,
+h4,
+h5,
+h6,
+abbr,
+p,
+summary {
+  @media (prefers-reduced-motion: no-preference) {
+    transform: translateY(calc(50% * (var(--scroll-velocity) * -1)))
+      scale(calc(1 + (-0.02 * var(--scroll-velocity))));
+  }
+}
+
+@keyframes slide-right {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(100cqw - 100%));
+  }
+}
+
+@keyframes in-view {
+  from {
+    transform: translateX(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(500px);
   }
 }
 
@@ -729,6 +750,74 @@ h1 {
 /* h1 span:is(:hover, :focus-visible) {
   anchor-name: --pageTitle;
 } */
+main,
+aside,
+footer {
+  --margin-left: 1rem;
+  mix-blend-mode: exclusion;
+  position: relative;
+
+  &:has(+ *) {
+    --extra-padding: var(--gap);
+  }
+
+  &::before {
+    mix-blend-mode: hue;
+    content: "";
+    background: white;
+    left: -0.5rem;
+    width: 0.25rem;
+    height: calc(100% + var(--extra-padding, 0px));
+    position: absolute;
+  }
+
+  > * {
+    margin-left: var(--margin-left);
+  }
+
+  h2 {
+    &::before {
+      mix-blend-mode: hue;
+      content: "";
+      background: white;
+      top: 50%;
+      left: calc(-1 * var(--margin-left) - 0.25rem);
+      transform: translateY(-50%);
+      height: 0.25rem;
+      width: calc(1 * var(--margin-left));
+      position: absolute;
+    }
+  }
+
+  h3 {
+    margin-left: var(--margin-left);
+    position: relative;
+    &::before {
+      mix-blend-mode: hue;
+      content: "";
+      background: white;
+      top: 50%;
+      left: calc(-2 * var(--margin-left) - 0.25rem);
+      transform: translateY(-50%);
+      height: 0.25rem;
+      width: calc(2 * var(--margin-left));
+      position: absolute;
+    }
+  }
+
+  h3 ~ * {
+    margin-left: calc(var(--margin-left) * 2);
+  }
+}
+/* Font sizes */
+@media (min-width: 1024px ){
+  h2{
+    font-size: 1.5em;
+  }
+  h3 {
+    font-size: 1.375em;
+  }
+}
 
 abbr,
 h2,
@@ -741,6 +830,7 @@ h6 {
     animation: text_improvement 0.75s var(--ease-OutQuint) both;
     animation-timeline: view();
     animation-range: entry 50% exit 65%;
+    animation-composition: add;
   }
 }
 
@@ -785,20 +875,17 @@ span {
         )
       );
 
-
       mix-blend-mode: exclusion;
       max-height: 50svh;
       aspect-ratio: 1 / 1;
       position: relative !important;
 
       a {
-        position: absolute;
-        top: 100%;
+        order: 2;
         display: inline-block;
         color: white;
         border: 2px solid chartreuse;
         line-height: 1;
-        mix-blend-mode: difference;
         z-index: 2;
       }
 
@@ -896,7 +983,7 @@ a::selection {
   }
   25%,
   100% {
-    --bg-rgb: rgb(21, 36, 137);
+    --bg-rgb: rgb(137, 21, 118);
   }
 }
 
@@ -904,4 +991,10 @@ a::selection {
   to {
     --strip-progress: 1;
   }
+}
+
+p {
+  text-wrap: balance;
+  text-wrap: pretty;
+  max-width: 65ch;
 }
